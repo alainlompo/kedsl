@@ -8,9 +8,11 @@ require('./styling.scss')
 
 class State {
   @observable counter = 0
+  @observable isChecked = false;
   @action increment = (_) => { this.counter++ }
   @action decrement = (_) => { this.counter-- }
   @action reset = (_) => {this.counter = 0}
+  @action toggleCheckButton = (_) => {this.isChecked = !this.isChecked}
 }
 
 const state = new State()
@@ -21,7 +23,22 @@ const CounterComponent = observer( ({state}) => <div>
     <Button color="danger" onClick={state.decrement}>-1</Button>
   </div>)
 
+const CheckboxComponent = observer( ({state}) => <div>
+  <label className={`text-primary`}>
+    <input type="checkbox" id="checkBox1"
+    checked={state.isChecked}
+      onChange={state.toggleCheckButton}/>
+      &nbsp;Dsl is made easy
+  </label>
+</div>)
+
+const AppComponent = ({state}) => <div>
+  <CounterComponent state={state} />
+  <br/>
+  <CheckboxComponent state={state} />
+</div>
+
 render(
-  <CounterComponent state={state} />,
+  <AppComponent state={state} />,
   document.getElementById("root")
 )
